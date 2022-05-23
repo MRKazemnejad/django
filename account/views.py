@@ -6,6 +6,8 @@ from django.contrib import messages
 from django.contrib.auth import login,authenticate,logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from home.models import Post
+from django.contrib.auth import views as auth_view
+from django.urls import reverse_lazy
 
 # Create your views here.
 
@@ -69,11 +71,20 @@ class UserProfileView(LoginRequiredMixin,View):
 
 
 
+class UserEmailReset(auth_view.PasswordResetView):
+    template_name='account/password_reset_form.html'
+    success_url=reverse_lazy('account:reset_done')
+    email_template_name='account/password_reset_template.html'
+
+class UserPasswordResetDone(auth_view.PasswordResetDoneView):
+    template_name='account/password_reset_done.html'
 
 
+class UserPasswordResetConfirm(auth_view.PasswordResetConfirmView):
+    template_name = 'account/password_reset_confirm.html'
+    success_url = reverse_lazy('account:password_complete')
 
 
-
-
-
+class UserPasswordResetComplete(auth_view.PasswordResetCompleteView):
+    template_name='account/password_reset_complete.html'
 
