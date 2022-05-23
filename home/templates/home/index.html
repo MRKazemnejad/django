@@ -3,7 +3,7 @@
 {% block content %}
     {% if user.is_authenticated %}
     {% for post in posts %}
-       <a href="{% url 'home:post' post.id post.slug %}">{{ post.body|truncatewords:50 }}--{{ post.created|date:"Y-j" }}</a>
+       <a href="{{ post.get_absolute_url }}">{{ post.body|truncatewords:50 }}--{{ post.created|date:"Y-j" }}</a>
         <br>
     {% endfor %}
     {% endif %}
