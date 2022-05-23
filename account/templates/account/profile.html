@@ -1,0 +1,9 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+    <p class="text-center" >{{ user.username }}</p>
+    {% for post in posts %}
+        <a href="{% url 'home:post' post.id post.slug %}"><p>{{ post.body|truncatewords:50 }}--{{ post.created|date:"Y-j" }}</p></a>
+
+    {% endfor %}
+{% endblock %}
