@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.views import View
-from .forms import UserRegistrationForm,UserLoginForm
+from .forms import UserRegistrationForm,UserLoginForm,EditUserProfile
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import login,authenticate,logout
@@ -99,4 +99,20 @@ class UserPasswordResetConfirm(auth_view.PasswordResetConfirmView):
 
 class UserPasswordResetComplete(auth_view.PasswordResetCompleteView):
     template_name='account/password_reset_complete.html'
+
+
+class EditUserProfileView(LoginRequiredMixin, View):
+    form_class=EditUserProfile
+    def get(self, request):
+        form=self.form_class(instance=request.user.pro,initial={'email':request.user.email})
+        return render(request,'account/edit_user.html',{'form':form})
+
+    def post(self, request):
+        form=self.form_class(request.POST,instance=request.user.pro)
+        if form.is_valid():
+            form.save()
+            request.user.email=form.cleaned_data['email']
+            request.user.save()
+            messages.success(request,'your profile edited successfully','success')
+        return redirect('account:profile',request.user.id)
 

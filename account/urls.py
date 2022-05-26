@@ -10,6 +10,7 @@ urlpatterns=[
     path('reset/',views.UserEmailReset.as_view(),name='reset_email'),
     path('reset/done/',views.UserPasswordResetDone.as_view(),name='reset_done'),
     path('confirm/<uidb64>/<token>/',views.UserPasswordResetConfirm.as_view(),name='confirm_password'),
-    path('confirm/done/',views.UserPasswordResetComplete.as_view(),name='password_complete')
+    path('confirm/done/',views.UserPasswordResetComplete.as_view(),name='password_complete'),
+    path('edit/',views.EditUserProfileView.as_view(),name='edit_profile'),
 
 ]

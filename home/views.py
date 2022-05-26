@@ -142,3 +142,4 @@ class LikeView(LoginRequiredMixin,View):
             messages.success(request,"you liked this post",'success')
         return redirect('home:post',post.id,post.slug)
 
+
