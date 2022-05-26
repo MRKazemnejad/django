@@ -16,3 +16,11 @@ class CommentFormView(forms.ModelForm):
         widgets={
             'body':forms.Textarea(attrs={'class':'form-control'})
         }
+
+class CommentReplayFormView(forms.ModelForm):
+    class Meta:
+        model=Comment
+        fields=('body',)
+
+class SearchFormView(forms.Form):
+    search=forms.CharField(max_length=200)

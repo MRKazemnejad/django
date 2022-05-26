@@ -1,6 +1,10 @@
 {% extends 'app/base.html' %}
 
 {% block content %}
+    <form method="get" action="">
+    {{ form.as_p }}
+    <input type="submit" value="Search">
+    </form>
 {#    {% if user.is_authenticated %}#}
     {% for post in posts %}
        <a href="{{ post.get_absolute_url }}">{{ post.body|truncatewords:50 }}--{{ post.created|date:"Y-j" }}</a>

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post,Relation,Comment
+from .models import Post,Relation,Comment,PostLike
 
 # Register your models here.
 # admin.site.register(Post)
@@ -18,3 +18,6 @@ admin.site.register(Relation)
 class CommentAdmin(admin.ModelAdmin):
     list_display=('user','body','is_replay','post')
     raw_id_fields=('user','post','replay')
+
+
+admin.site.register(PostLike)
