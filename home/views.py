@@ -6,6 +6,8 @@ from django.contrib import messages
 from .forms import PostUpdateView,CommentFormView
 from django.utils.text import slugify
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 # Create your views here.
 
@@ -27,6 +29,7 @@ class PostView(View):
         # post=get_object_or_404(Post,pk=post_id,slug=post_slug)
         comments=self.post_instance.comment_post.filter(is_replay=False)
         return render(request,'home/post.html',{'post':self.post_instance,'comments':comments,'form':self.form_class})
+    @method_decorator(login_required)
     def post(self,request,*args,**kwargs):
         form=self.form_class(request.POST)
         if form.is_valid():
