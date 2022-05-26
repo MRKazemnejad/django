@@ -2,8 +2,14 @@
 
 {% block content %}
     <p class="text-center" >{{ user.username }}</p>
+
+    {% if request.user.id != user.id and is_following %}
+        <a class="btn btn-primary" href="{% url 'home:unfollow' user.id %}">Unfollow</a>
+    {% elif request.user.id != user.id and not is_following%}
+        <a class="btn btn-primary" href="{% url 'home:follow' user.id %}">Follow</a>
+    {% endif %}
     {% for post in posts %}
         <a href="{% url 'home:post' post.id post.slug %}"><p>{{ post.body|truncatewords:50 }}--{{ post.created|date:"Y-j" }}</p></a>
-
     {% endfor %}
+
 {% endblock %}

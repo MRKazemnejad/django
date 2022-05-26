@@ -5,8 +5,19 @@
         <a href="{% url 'home:delete_post' post.id %}" class="btn btn-danger">Delete</a>
         <a href="{% url 'home:update_post' post.id %}" class="btn btn-primary">Update</a>
     {% endif %}
-    <p>{{ post.user.username }}</p>
+
+    <a href="{% url 'account:profile' post.user.id %}"><p>{{ post.user.username }}</p></a>
     <p>{{ post.body }}</p>
     <p>{{ post.created }}</p>
+
+{#    {% for comment in comments %}#}
+{#        <div class="card bg-dark">#}
+{#            <p class="card_header">{{ comment.user.username }} | {{ comment.created|timesince }}</p>#}
+{#            <p class="card_body">{{ commnet.body }}</p>#}
+
+{#        </div>#}
+{#    {% empty %}#}
+{#        <p>No commnet yet</p>#}
+{#    {% endfor %}#}
 
 {% endblock %}

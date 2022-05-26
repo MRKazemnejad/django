@@ -1,12 +1,12 @@
 {% extends 'app/base.html' %}
 
 {% block content %}
-    {% if user.is_authenticated %}
+{#    {% if user.is_authenticated %}#}
     {% for post in posts %}
        <a href="{{ post.get_absolute_url }}">{{ post.body|truncatewords:50 }}--{{ post.created|date:"Y-j" }}</a>
         <br>
     {% endfor %}
-    {% endif %}
+{#    {% endif %}#}
 
 {% endblock %}
 

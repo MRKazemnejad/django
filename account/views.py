@@ -8,6 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from home.models import Post
 from django.contrib.auth import views as auth_view
 from django.urls import reverse_lazy
+from home.models import Relation
 
 # Create your views here.
 
@@ -37,6 +38,9 @@ class UserLoginView(View):
 
     form_name=UserLoginForm
     template_name='account/login_form.html'
+    def setup(self, request, *args, **kwargs):
+        self.next=request.GET.get('next')
+        return super().setup(request,*args,**kwargs)
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -53,6 +57,8 @@ class UserLoginView(View):
             if user is not None:
                 login(request,user)
                 messages.success(request,'You login successfully','success')
+                if self.next:
+                    return redirect(self.next)
                 return redirect('home:home')
             messages.error(request,'username or passwor is wrong','error')
         return render(request,self.template_name,{'form':form})
@@ -65,10 +71,15 @@ class UserLogoutView(LoginRequiredMixin,View):
 
 class UserProfileView(LoginRequiredMixin,View):
     def get(self,request,user_id):
+        is_following=False
         user=User.objects.get(pk=user_id)
         # post=Post.objects.filter(user=user)
+        #using related_name
         post=user.posts.all()
-        return render(request,'account/profile.html',{'user':user,'posts':post})
+        relation=Relation.objects.filter(from_user=request.user,to_user=user)
+        if relation.exists():
+            is_following=True
+        return render(request,'account/profile.html',{'user':user,'posts':post,'is_following':is_following})
 
 
 

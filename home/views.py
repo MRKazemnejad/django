@@ -1,10 +1,11 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.views import View
-from .models import Post
+from .models import Post,Relation
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from .forms import PostUpdateView
 from django.utils.text import slugify
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -19,6 +20,7 @@ class PostView(View):
     def get(self,request,post_id,post_slug):
         # post=Post.objects.get(pk=post_id,slug=post_slug)
         post=get_object_or_404(Post,pk=post_id,slug=post_slug)
+        # comments=post.comment_post.filter(is_replay=False)
         return render(request,'home/post.html',{'post':post})
 
 class DeleteView(LoginRequiredMixin,View):
@@ -66,6 +68,26 @@ class UpdateView(LoginRequiredMixin,View):
 
 
 
+class FollowView(LoginRequiredMixin,View):
+    def get(self,request,user_id):
+        user=User.objects.get(pk=user_id)
+        relation=Relation.objects.filter(from_user=request.user,to_user=user)
+        if relation.exists():
+            messages.error(request,'you followed this person before','error')
+        else:
+            Relation(from_user=request.user,to_user=user).save()
+            messages.success(request,'you followed successfully')
+        return redirect('home:home')
 
 
+class UnFollowView(LoginRequiredMixin,View):
+    def get(self,request,user_id):
+        user=User.objects.get(pk=user_id)
+        relation=Relation.objects.filter(from_user=request.user,to_user=user)
+        if relation.exists():
+            relation.delete()
+            messages.success(request,'you unfollowed successfully','success')
+        else:
+            messages.error(request,'you did not follow this person yet!','error')
+        return redirect('home:home')
 
