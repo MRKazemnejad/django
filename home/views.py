@@ -20,8 +20,8 @@ class PostView(View):
     def get(self,request,post_id,post_slug):
         # post=Post.objects.get(pk=post_id,slug=post_slug)
         post=get_object_or_404(Post,pk=post_id,slug=post_slug)
-        # comments=post.comment_post.filter(is_replay=False)
-        return render(request,'home/post.html',{'post':post})
+        comments=post.comment_post.filter(is_replay=False)
+        return render(request,'home/post.html',{'post':post,'comments':comments})
 
 class DeleteView(LoginRequiredMixin,View):
     def get(self,request,*arge,**kwargs):
