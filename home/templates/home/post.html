@@ -10,6 +10,15 @@
     <p>{{ post.body }}</p>
     <p>{{ post.created }}</p>
     <hr/>
+    {% if request.user.is_authenticated %}
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input class="btn btn-primary" type="submit" value="Reply">
+        </form>
+    {% else %}
+        <p class="alert alert-danger">You are not logged in</p>
+    {% endif %}
     {% for comment in comments %}
         <div class="card bg-dark text-white">
             <p class="card_header">{{ comment.user.username }} | {{ comment.created|timesince }}</p>
