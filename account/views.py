@@ -22,10 +22,10 @@ class UserRegisterView(View):
             return redirect('home:home')
         return super().dispatch(request,*args,**kwargs)
 
-    def get(self,request):
+    def get(self,request,*args,**kwargs):
         return render(request,self.template_name,{'form':self.form_name})
 
-    def post(self,request):
+    def post(self,request,*args,**kwargs):
         form=self.form_name(request.POST)
         if form.is_valid():
            cd=form.cleaned_data
